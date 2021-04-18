@@ -1,0 +1,88 @@
+
+public class MinHeap {
+
+	public static void main(String[] args) {
+		int heap[] = initHeapArray();
+		printHeap(heap);
+		minifyHeap(heap);
+		printHeap(heap);
+		extractMin(heap);
+	}
+
+	private static void extractMin(int[] heap) 
+	{
+		for(int i = 1;i<=heap.length-1;i++)
+		{
+			System.out.print(getMin(heap,i)+" ");
+		}	
+	}
+	private static String getMin(int []heap,int i)
+	{
+		int min = heap[0];
+		heap[0] = heap[heap.length-i];
+		minHeap(heap, 0, heap.length-i);
+		return min+" ";
+	}
+
+	private static void minifyHeap(int[] heap)
+	{
+		int heapSize = heap.length-1;
+		int firstLeaf = heapSize/2;
+		for(int i = firstLeaf;i>=0;i--)
+		{
+			minHeap(heap,i,heapSize);
+		}
+	}
+
+	private static void minHeap(int[] heap, int i, int heapSize) {
+		int leftChild = i*2+1;
+		int rightChild = i*2+2;
+		int smallest = -1;
+		if(leftChild<=heapSize)
+		{
+			smallest = heap[leftChild]<heap[i]?leftChild:i;
+		}
+		if(rightChild<=heapSize)
+		{
+			smallest = heap[rightChild]<heap[smallest]?rightChild:smallest;
+		}
+		if(smallest!=i&&smallest!=-1)
+		{
+			int temp = heap[smallest];
+			heap[smallest] = heap[i];
+			heap[i] = temp;
+			minHeap(heap, smallest, heapSize);
+		}
+		
+		
+	}
+
+	private static void printHeap(int[] heap) {
+		System.out.println("heap_size= "+heap.length);
+		String dash = "";
+		for(int i =0 ;i<heap.length;i++)
+		{
+			System.out.print(heap[i]+" ");
+		}
+		System.out.println();
+		for(int i=1;i<=heap.length*3;i++ )
+			dash = dash + "-";
+		System.out.println(dash);
+	}
+
+	private static int[] initHeapArray() {
+		int n = getRandomNum(20,10);
+		int heap[] = new int[n];
+		for(int i =0 ;i<heap.length;i++)
+		{
+			heap[i] = getRandomNum(500, 1);
+		}
+		return heap;
+	}
+
+	private static int getRandomNum(int max,int min) {
+	
+		return (int)(Math.random()*(max-min+1)+min);
+	}
+
+}
